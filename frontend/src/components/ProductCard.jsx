@@ -1,6 +1,19 @@
 import { Link } from 'react-router-dom';
 
 export default function ProductCard({ product, onAddToCart }) {
+  let stockLabel;
+  
+  // Determine the stock label based on the product's stock quantity
+  if(product.stock < 1) { // Out of stock
+    stockLabel = 'Out of Stock';
+  }
+  else if (product.stock <= 8) {
+    stockLabel = `Only ${product.stock} left`;
+  }
+  else {
+    stockLabel = `${product.stock} in stock`;
+  }
+
   return (
     <article className="product-card">
       <div className="product-icon" aria-hidden="true">{product.emoji}</div>
@@ -9,10 +22,11 @@ export default function ProductCard({ product, onAddToCart }) {
       <p className="product-description">{product.description}</p>
       <p className="price">₱{Number(product.price).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</p>
       <p className={product.stock > 0 ? 'stock' : 'stock unavailable'}>
-        {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+          {stockLabel}
       </p>
       <div className="card-actions">
         <Link className="button secondary" to={`/products/${product.id}`}>Details</Link>
+        {/* Button for adding the product to the cart with onClick */}
         <button disabled={product.stock < 1} onClick={() => onAddToCart(product)}>Add to cart</button>
       </div>
     </article>

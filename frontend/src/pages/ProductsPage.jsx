@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext.jsx';
 import { api } from '../services/api.js';
 
 export default function ProductsPage() {
+  // State variables for products, search query, category filter, loading status, and error message
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
@@ -26,8 +27,14 @@ export default function ProductsPage() {
     [products]
   );
 
+  // Convert search value to lowercase
+  const query = search.trim().toLowerCase();
+
+  // Products filtered based on search and category
   const visibleProducts = products.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(search.trim().toLowerCase());
+    const matchesSearch = product.name.toLowerCase().includes(query) ||
+                          product.description.toLowerCase().includes(query);
+    
     const matchesCategory = category === 'All' || product.category === category;
     return matchesSearch && matchesCategory;
   });
