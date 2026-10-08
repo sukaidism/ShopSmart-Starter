@@ -92,7 +92,7 @@ export default function ProductsPage() {
         </label>
         
         <label>
-          <span>Filter</span>
+          <span>Sort</span>
           <select value={sortCatalog} onChange={(event) => setSortCatalog(event.target.value)}>
             <option value="Default">Default</option>
             <option value="Price-low-high">Price: Low to High</option>

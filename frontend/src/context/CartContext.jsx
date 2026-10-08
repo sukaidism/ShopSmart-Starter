@@ -33,10 +33,6 @@ export function CartProvider({ children }) {
     setCartMessage('Item removed from cart.');
   }
 
-  function getItemSubtotal(item) {
-    return item.price * item.quantity;
-  }
-
   function clearCart() {
     setCart([]);
     setCartMessage('');

@@ -60,12 +60,16 @@ export default function CheckoutPage() {
         <h2>Order summary</h2>
 
         {cart.map((item) => (
-          <div key={item.productId}>
-            <strong><p>{item.name}</p></strong>
-            <p>Quantity: {item.quantity}</p>
-            <p>Subtotal: ₱
-              {subTotal(item).toLocaleString('en-PH')}
-            </p>
+          <div key={item.productId} className="checkout-item">
+            <div>
+              <strong><p>{item.name}</p></strong>
+            </div>
+            <div>
+              <p>Quantity: {item.quantity}</p>
+              <p>Subtotal: ₱
+                {subTotal(item).toLocaleString('en-PH')}
+              </p>
+            </div>
           </div>
         ))}
 
