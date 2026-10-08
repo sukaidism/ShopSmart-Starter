@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 import {
-  addProductToCart, calculateCartItemCount,
+  addProductToCart, calculateCartItemCount, calculateItemSubtotal,
   calculateCartTotal, updateCartQuantity
 } from '../utils/cart.js';
 
@@ -33,6 +33,10 @@ export function CartProvider({ children }) {
     setCartMessage('Item removed from cart.');
   }
 
+  function getItemSubtotal(item) {
+    return item.price * item.quantity;
+  }
+
   function clearCart() {
     setCart([]);
     setCartMessage('');
@@ -43,6 +47,7 @@ export function CartProvider({ children }) {
     cartMessage,
     itemCount: calculateCartItemCount(cart),
     total: calculateCartTotal(cart),
+    subTotal: (item) => calculateItemSubtotal(item),
     addToCart,
     setQuantity,
     removeFromCart,

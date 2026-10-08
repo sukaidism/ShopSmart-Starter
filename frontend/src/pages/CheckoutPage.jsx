@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext.jsx';
 import { api } from '../services/api.js';
 
 export default function CheckoutPage() {
-  const { cart, total, clearCart } = useCart();
+  const { cart, total, subTotal, clearCart } = useCart();
   const [form, setForm] = useState({ customerName: '', email: '', address: '' });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -55,7 +55,26 @@ export default function CheckoutPage() {
         <label>Delivery address<textarea name="address" value={form.address} onChange={updateField} minLength="10" maxLength="300" required /></label>
         <button disabled={submitting}>{submitting ? 'Submitting order…' : 'Place simulated order'}</button>
       </form>
-      <aside className="summary"><h2>Amount due</h2><p className="summary-total"><span>Total</span><strong>₱{total.toLocaleString('en-PH')}</strong></p><small>No actual payment will be collected.</small></aside>
+
+      <aside className="summary">
+        <h2>Order summary</h2>
+
+        {cart.map((item) => (
+          <div key={item.productId}>
+            <strong><p>{item.name}</p></strong>
+            <p>Quantity: {item.quantity}</p>
+            <p>Subtotal: ₱
+              {subTotal(item).toLocaleString('en-PH')}
+            </p>
+          </div>
+        ))}
+
+        <p className="summary-total">
+          <span>Total</span>
+          <strong>₱{total.toLocaleString('en-PH')}</strong>
+        </p>
+        <small>No actual payment will be collected.</small>
+      </aside>
     </section>
   );
 }

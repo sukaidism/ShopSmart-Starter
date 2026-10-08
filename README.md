@@ -81,7 +81,7 @@ git --version
 13. At the `postgres=#` prompt, run these statements one at a time:
 
 ```sql
-CREATE USER shopsmart_user WITH PASSWORD 'shopsmart_dev';
+\
 CREATE DATABASE shopsmart OWNER shopsmart_user;
 ```
 

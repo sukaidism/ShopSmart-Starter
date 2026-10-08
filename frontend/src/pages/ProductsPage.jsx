@@ -9,6 +9,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
+  const [sortCatalog, setSortCatalog] = useState("Default");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { addToCart, cartMessage } = useCart();
@@ -31,6 +32,7 @@ export default function ProductsPage() {
   const query = search.trim().toLowerCase();
 
   // Products filtered based on search and category
+  /*
   const visibleProducts = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(query) ||
                           product.description.toLowerCase().includes(query);
@@ -38,6 +40,34 @@ export default function ProductsPage() {
     const matchesCategory = category === 'All' || product.category === category;
     return matchesSearch && matchesCategory;
   });
+  */
+
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(query) ||
+      product.description.toLowerCase().includes(query);
+
+    const matchesCategory = category === 'All' || product.category === category;
+    return matchesSearch && matchesCategory;
+  });
+
+  const visibleProducts = [...filteredProducts];
+
+  if (sortCatalog === 'Price-low-high') {
+    visibleProducts.sort((ProductOne, ProductTwo) => 
+      Number(ProductOne.price) - Number(ProductTwo.price)
+    );
+  }
+  else if (sortCatalog === 'Price-high-low') {
+    visibleProducts.sort((ProductOne, ProductTwo) => 
+      Number(ProductTwo.price) - Number(ProductOne.price)
+    );
+  }
+  else if (sortCatalog === 'Name-A-Z') {
+    visibleProducts.sort((ProductOne, ProductTwo) =>
+      ProductOne.name.localeCompare(ProductTwo.name)
+    );
+  }
 
   return (
     <section>
@@ -60,6 +90,17 @@ export default function ProductsPage() {
             {categories.map((item) => <option key={item}>{item}</option>)}
           </select>
         </label>
+        
+        <label>
+          <span>Filter</span>
+          <select value={sortCatalog} onChange={(event) => setSortCatalog(event.target.value)}>
+            <option value="Default">Default</option>
+            <option value="Price-low-high">Price: Low to High</option>
+            <option value="Price-high-low">Price: High to Low</option>
+            <option value="Name-A-Z">Name: A To Z</option>
+          </select>
+        </label>
+        
       </div>
 
       <StatusMessage>{cartMessage}</StatusMessage>
